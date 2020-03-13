@@ -1,55 +1,17 @@
-// axios call for my github handle 
-axios.get(`https://api.github.com/users/easpaas`)
-  .then(response => {
-    console.log(response.data);
-    cards.append(createCard(response.data));
-  })
-  .catch(error => {
-    console.log(error);
-  });
-
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
-
-const followersArray = ['imriven', 'michaelbarnes7282', 'sekotszs', 'Tusk617', 'Jesuscarrillo179', 'RobertMisch', 'cladams0203'];
-
-followersArray.forEach(follower => {
-  let getUser = `https://api.github.com/users/${follower}`;
-  axios.get(getUser)
-    .then(response => {
-      cards.append(createCard(response.data));
-    })
-    .catch(error => {
-      console.log(error);
-    })
-});
-
-/* Step 3: Create a function that accepts a single object as its only argument,
-           Using DOM methods and properties, create a component that will return the following DOM element:
-
-<div class="card">
-  <img src={image url of user} />
-  <div class="card-info">
-    <h3 class="name">{users name}</h3>
-    <p class="username">{users user name}</p>
-    <p>Location: {users location}</p>
-    <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
-    </p>
-    <p>Followers: {users followers count}</p>
-    <p>Following: {users following count}</p>
-    <p>Bio: {users bio}</p>
-  </div>
-</div>
-
-*/
+// <div class="card">
+//   <img src={image url of user} />
+//   <div class="card-info">
+//     <h3 class="name">{users name}</h3>
+//     <p class="username">{users user name}</p>
+//     <p>Location: {users location}</p>
+//     <p>Profile:  
+//       <a href={address to users github page}>{address to users github page}</a>
+//     </p>
+//     <p>Followers: {users followers count}</p>
+//     <p>Following: {users following count}</p>
+//     <p>Bio: {users bio}</p>
+//   </div>
+// </div>
 
 /*
  * This function will accept a data object 
@@ -67,7 +29,7 @@ function createCard(data) {
   // cardInfo ('div')
   const cardInfo = document.createElement('div');
   cardInfo.classList.add('card-info');
-
+  
   // ********************************
   // append all of these to card-info
   
@@ -83,26 +45,28 @@ function createCard(data) {
 
   // location ('p')
   const location = document.createElement('p');
-  location.textContent = data.location;
+  location.textContent = `Location: ${data.location}`;
 
   const profile = document.createElement('p');
+  profile.textContent = "Profile: ";
   
   // pLink ('a')
   const pLink = document.createElement('a');
-  pLink.setAttribute('src', data.html_url);
+  pLink.href = data.html_url;
+  pLink.textContent = `${data.html_url}`;
   profile.append(pLink);
 
   // followers count ('p')
   const followers = document.createElement('p');
-  followers.textContent = data.followers;
+  followers.textContent = `Followers: ${data.followers}`;
 
   // following count ('p')
   const following = document.createElement('p');
-  following.textContent = data.following;
+  following.textContent = `Following: ${data.following}`;
 
   // bio ('p')
   const bio = document.createElement('p');
-  bio.textContent = data.bio;
+  bio.textContent = `Bio: ${data.bio}`;
 
   cardInfo.append(user, username, location, profile, followers, following, bio);
   // ********************************
@@ -112,13 +76,43 @@ function createCard(data) {
   return card;
 } // closes create function
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
 
 // selector for parent of card component
 const cards = document.querySelector('.cards');
+
+
+/*
+ * 
+ * Create a function that requests the followers data from the API
+ * after it has received your data and create a card for each of your followers.
+ * 
+ */
+
+function myFollowers() {
+  const followersArray = [];
+  // axios call for my github handle 
+  axios.get(`https://api.github.com/users/easpaas`)
+    .then(response => {      
+      cards.append(createCard(response.data));
+      
+    })
+      // console.log(response.data.followers_url);  <= logs ()
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  // TODO store list of followers from response.data 
+// followersArray.forEach(follower => {
+//   let getUser = `https://api.github.com/users/${follower}`;
+//   axios.get(getUser)
+//     .then(response => {
+//       cards.append(createCard(response.data));
+//     })
+//     .catch(error => {
+//       console.log(error);
+//     })
+// });
+}
+console.log(myFollowers());
